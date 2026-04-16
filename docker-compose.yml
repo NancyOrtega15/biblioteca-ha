@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  api:
+    build: ./api
+    depends_on:
+      - mysql-master
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+
+  mysql-master:
+    image: mysql:8
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: biblioteca
+    command: --server-id=1 --log-bin=mysql-bin
+    volumes:
+      - /mnt/mysql_master:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
