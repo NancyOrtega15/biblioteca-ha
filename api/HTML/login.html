@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&family=Inter:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+<title>Login</title>
+
+<style>
+body {
+    font-family: "Manrope", sans-serif;
+    background: #0a0f16;
+}
+.font-serif {
+    font-family: "Newsreader", serif;
+}
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col text-white">
+
+<header class="w-full py-4 px-6 flex justify-between items-center">
+    <h1 class="text-lg font-serif italic text-blue-300">The Archival Scholar</h1>
+    <span class="material-symbols-outlined">menu_book</span>
+</header>
+
+<main class="flex-grow flex items-center justify-center px-4 py-10">
+
+<div class="w-full max-w-md">
+
+    <div class="text-center mb-8">
+        <p class="text-xs uppercase tracking-widest text-blue-400 mb-2">Portal</p>
+        <h2 class="text-3xl md:text-4xl font-serif italic text-blue-100">
+            Bienvenido
+        </h2>
+    </div>
+
+    <div class="bg-white text-gray-800 p-6 md:p-8 rounded-lg shadow-lg">
+
+        <form class="space-y-6" id="form">
+
+            <!-- USUARIO -->
+            <div>
+                <label class="text-xs uppercase text-gray-500 font-bold">Usuario</label>
+                <input 
+                    type="text" 
+                    id="username"
+                    class="w-full border-b-2 py-3 outline-none focus:border-blue-500"
+                    placeholder="Ingrese su usuario"
+                >
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="relative">
+                <label class="text-xs uppercase text-gray-500 font-bold">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="password"
+                    class="w-full border-b-2 py-3 outline-none focus:border-blue-500"
+                    placeholder="Ingrese su contraseña"
+                >
+                <button type="button" id="togglePassword" class="absolute right-2 top-8">
+                    <span class="material-symbols-outlined">visibility</span>
+                </button>
+            </div>
+
+            <!-- ERROR -->
+            <div id="error" class="hidden text-red-500 text-sm text-center"></div>
+
+            <!-- BOTON -->
+            <button 
+                type="submit"
+                class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+            >
+                Acceder
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</main>
+
+<footer class="text-center text-xs text-gray-400 py-4">
+    © 2026 Sistema
+</footer>
+
+<script>
+const form = document.getElementById("form");
+const error = document.getElementById("error");
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+// 👁 Mostrar / ocultar contraseña
+togglePassword.addEventListener("click", () => {
+    const type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type = type;
+});
+
+// 🚀 LOGIN
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    // ✅ Validación
+    if (!username || !password) {
+        error.textContent = "Completa todos los campos";
+        error.classList.remove("hidden");
+        return;
+    }
+
+    try {
+        const response = await fetch("../login.php?accion=login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nombre: username,
+                password: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.exito) {
+            alert("Bienvenido " + result.usuario.nombre);
+            window.location.href = "Panel.html";
+        } else {
+            error.textContent = result.mensaje;
+            error.classList.remove("hidden");
+        }
+
+    } catch (err) {
+        console.error(err);
+        error.textContent = "Error de conexión con el servidor";
+        error.classList.remove("hidden");
+    }
+});
+</script>
+
+</body>
+</html>

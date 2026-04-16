@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archivo Editorial - Panel de Control</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Newsreader for Display & Manrope for Body -->
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#1976D2",
+                    "primary-dark": "#1565C0",
+                    "primary-light": "#42A5F5",
+                    "primary-container": "#E3F2FD",
+                    "on-primary-container": "#0D47A1",
+                    "secondary": "#388E3C",
+                    "secondary-dark": "#2E7D32",
+                    "secondary-light": "#4CAF50",
+                    "secondary-container": "#E8F5E8",
+                    "on-secondary-container": "#1B5E20",
+                    "accent": "#FF9800",
+                    "background": "#F5F5F5",
+                    "surface": "#FFFFFF",
+                    "surface-variant": "#E8F5E8",
+                    "surface-container": "#F5F5F5",
+                    "surface-container-high": "#E8F5E8",
+                    "surface-container-lowest": "#FFFFFF",
+                    "on-primary": "#FFFFFF",
+                    "on-secondary": "#FFFFFF",
+                    "on-background": "#212121",
+                    "on-surface": "#212121",
+                    "on-surface-variant": "#757575",
+                    "error": "#D32F2F",
+                    "error-container": "#FFEBEE",
+                    "on-error": "#FFFFFF",
+                    "on-error-container": "#B71C1C",
+                    "success": "#4CAF50",
+                    "warning": "#FF9800",
+                    "info": "#2196F3",
+                    "tertiary": "#7B1FA2",
+                    "tertiary-container": "#F3E5F5",
+                    "on-tertiary": "#FFFFFF",
+                    "on-tertiary-container": "#4A148C",
+                    "outline": "#BDBDBD",
+                    "outline-variant": "#E0E0E0",
+                    "card-bg": "rgba(255, 255, 255, 0.9)",
+                    "sidebar-bg": "rgba(255, 255, 255, 0.25)",
+                    "header-bg": "rgba(255, 255, 255, 0.95)"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Manrope", "sans-serif"]
+            }
+          },
+        },
+    }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            display: inline-block;
+            vertical-align: middle
+        }
+        body {
+            font-family: "Manrope", sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 50%, #E8F5E8 100%);
+            background-attachment: fixed;
+        }
+        .serif-title {
+            font-family: "Newsreader", serif
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; opacity: 0.02;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC1dWA-hrcMxk-4DJCHh9lr3t7Zw7cJ4RppchKfZaUDFUqEqIgNUtQ9d8O-v5Dtta_UmTO8t2YNBy_d85-WH3EK4BNZD_Ms09YP1Al3x2YjJl7Ku362sM416MeXRSNrzNpTRG9nYSQ-yxSsH18vZgLLkpFzFHmDeGzuwgsgmarojH6CvqOY_fju3r3-GXDQShNGLDHJaPfh7gAtZuCGK2b2N5sVUEPK9tAhTzRpSmToY0P_c8ibf9rbt09d4iKwY-T--Pv6_PkwnuE)
+        }
+    </style>
+</head>
+<body class="text-on-surface antialiased overflow-x-hidden">
+<div class="grain-overlay"></div>
+<!-- SideNavBar (Authority: Shared Components JSON) -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col p-6 space-y-2 font-serif"
+style="background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-right: 1px solid rgba(76, 95, 213, 0.1);">
+
+    <div class="mb-6">
+        <h1 class="text-xl font-bold font-serif" style="color: #4C5FD5;">Archivo Editorial</h1>
+        <p class="text-xs uppercase tracking-widest mt-1" style="color: #57624A;">Sistema de Gestión</p>
+    </div>
+
+    <nav class="flex-1 space-y-2">
+        <!-- ACTIVO: Panel -->
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-transform duration-200 ease-in-out scale-95"
+        style="background-color: #4C5FD5; color: #FFFFFF;" href="Panel.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Panel Control</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg"
+        style="color: #42484E;" href="usuario.html"
+        onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'"
+        onmouseout="this.style.backgroundColor='transparent'">
+            <span class="material-symbols-outlined">group</span>
+            <span>Usuarios</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg"
+        style="color: #42484E;" href="prestamos.html"
+        onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'"
+        onmouseout="this.style.backgroundColor='transparent'">
+            <span class="material-symbols-outlined">book</span>
+            <span>Préstamos</span>
+        </a>
+
+        <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg"
+        style="color: #42484E;" href="libros.html"
+        onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'"
+        onmouseout="this.style.backgroundColor='transparent'">
+            <span class="material-symbols-outlined">library_books</span>
+            <span>Libros</span>
+        </a>
+    </nav>
+
+    <div class="pt-6" style="border-top: 1px solid rgba(76, 95, 213, 0.1);"></div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar (Authority: Shared Components JSON) -->
+<header class="w-full top-0 sticky z-40 shadow-sm flex justify-between items-center px-8 py-4" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-bold font-serif text-primary">Panel de Control</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-primary/20">
+<span class="text-sm font-medium text-on-surface">Bibliotecario Real</span>
+<img alt="Administrator profile portrait" class="w-8 h-8 rounded-full border border-amber-900/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5i0-VRW-dQ80GZ2JgOP0f0nJxQDLbMcs_9Wr2f9F4MFvrusFkOr4tLpdTiMtx4GrDelShptRZLPTSKxdM1XlcoLtc8kwsLdsDb9KyZVbbV38aUwX76tyOOtobDHHbG50SYPQZane9gFzjg6nkpkXTjLya5iZlPzOpLnIG7BobwWRUQAXRi5rhp6qX0qfNldYuyoeHiRHbE92l2ombO2SqszNgRMF7GE6QNViIdOB4CbfTcKMEIA87kEd6bGA6GLsPuMwaS3Ccup0"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-10 space-y-12">
+<!-- Hero Section -->
+<section class="flex justify-between items-end">
+<div class="space-y-2">
+<span class="text-xs uppercase tracking-[0.2rem] text-primary font-bold font-label">Administración Central</span>
+<h2 class="serif-title text-6xl text-on-surface tracking-tight leading-tight">Bienvenido, Curador.</h2>
+<p class="text-on-surface-variant max-w-md leading-relaxed text-lg">La sabiduría del pasado, gestionada con la precisión del presente.</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-bold text-outline uppercase tracking-[0.2em] mb-1">Estado del Sistema</p>
+<div class="flex items-center justify-end gap-2 text-primary font-serif italic text-xl">
+<span class="w-2 h-2 rounded-full" style="background-color: #A8C8B8"></span>
+                        Archivos Sincronizados
+                    </div>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Stats Grid (Left) -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="bg-card-bg p-8 rounded-xl shadow-sm border group hover:shadow-md transition-all" style="border-color: rgba(25, 118, 210, 0.2)">
+<div class="flex justify-between items-start mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">library_books</span>
+<span class="text-[10px] font-bold uppercase text-primary tracking-tighter">+12 hoy</span>
+</div>
+<h3 class="text-5xl font-serif font-bold text-primary">12,842</h3>
+<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Total de Libros</p>
+</div>
+<div class="bg-card-bg p-8 rounded-xl shadow-sm border group hover:shadow-md transition-all" style="border-color: rgba(56, 142, 60, 0.2)">
+<div class="flex justify-between items-start mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">history_edu</span>
+</div>
+<h3 class="text-5xl font-serif font-bold text-secondary">432</h3>
+<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Préstamos en Curso</p>
+</div>
+<div class="bg-card-bg p-8 rounded-xl shadow-sm border group hover:shadow-md transition-all" style="border-color: rgba(255, 152, 0, 0.2)">
+<div class="flex justify-between items-start mb-6">
+<span class="material-symbols-outlined text-warning text-3xl">priority_high</span>
+</div>
+<h3 class="text-5xl font-serif font-bold text-warning">18</h3>
+<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Devoluciones Pendientes</p>
+</div>
+</div>
+<!-- Circular Stat (Right) -->
+<div class="md:col-span-4 bg-card-bg p-8 rounded-xl flex flex-col justify-between border relative overflow-hidden" style="border-color: rgba(25, 118, 210, 0.2)">
+<div>
+<h3 class="serif-title text-2xl font-bold text-primary">Estado de Colección</h3>
+<p class="text-sm text-on-surface-variant mt-2">Capacidad total de estantería digital y física.</p>
+</div>
+<div class="py-10 flex justify-center">
+<div class="relative w-40 h-40">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="80" cy="80" fill="transparent" r="72" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="80" cy="80" fill="transparent" r="72" stroke="currentColor" stroke-dasharray="452.39" stroke-dashoffset="113.1" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center transform rotate-90">
+<span class="text-4xl font-serif font-bold text-primary">75%</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Ocupado</span>
+</div>
+</div>
+</div>
+<p class="text-[10px] font-bold uppercase tracking-widest text-center opacity-60 italic text-on-surface-variant">Próxima auditoría: 14 de Octubre</p>
+</div>
+</div>
+<!-- Bottom Section: Quick Actions & Recent Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Quick Actions -->
+<div class="lg:col-span-4 space-y-6">
+<h3 class="serif-title text-2xl font-bold text-primary">Acciones Rápidas</h3>
+<div class="space-y-4">
+<a href="libros.html" class="w-full flex items-center justify-between p-6 bg-card-bg rounded-xl shadow-sm hover:translate-x-1 transition-all group border" style="border-color: rgba(25, 118, 210, 0.2)">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-primary">add_box</span>
+</div>
+<span class="serif-title text-lg font-bold text-primary">Registrar Libro</span>
+</div>
+<span class="material-symbols-outlined text-primary/60 group-hover:text-primary transition-colors">chevron_right</span>
+</a>
+<a href="prestamos.html" class="w-full flex items-center justify-between p-6 bg-gradient-to-r from-primary to-primary-dark text-on-primary rounded-xl shadow-sm hover:opacity-95 transition-all group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white/10 flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-on-primary">swap_horiz</span>
+</div>
+<span class="serif-title text-lg font-bold">Realizar Préstamo</span>
+</div>
+<span class="material-symbols-outlined text-on-primary/70 group-hover:text-on-primary transition-colors">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="lg:col-span-8 bg-card-bg rounded-2xl p-8 border shadow-sm flex flex-col" style="border-color: rgba(25, 118, 210, 0.2); backdrop-filter: blur(10px)">
+<div class="flex justify-between items-center mb-8">
+<h3 class="serif-title text-2xl font-bold text-primary">Actividad Reciente</h3>
+<button onclick="toggleAllActivity()" class="text-[10px] font-bold uppercase tracking-widest text-primary border-b border-primary/30 hover:border-primary transition-colors">Ver todo el historial</button>
+</div>
+<div class="space-y-4 flex-1">
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg transition-all cursor-default border" style="border-color: rgba(25, 118, 210, 0.1)">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">outbox</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">Juan Pérez <span class="font-normal text-on-surface-variant">retiró</span> 'Don Quijote'</p>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.1em]">Hace 15 minutos • Sala A</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase tracking-tighter">En Curso</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg transition-all cursor-default border" style="border-color: rgba(56, 142, 60, 0.1)">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 bg-secondary/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">inbox</span>
+</div>
+<div>
+<p class="text-sm font-bold text-secondary">María García <span class="font-normal text-on-surface-variant">devolvió</span> 'Rayuela'</p>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.1em]">Hace 42 minutos • Recepción</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase tracking-tighter">Completado</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-amber-50/50 rounded-lg hover:bg-amber-100 transition-all cursor-default border border-transparent hover:border-amber-200/20">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10" style="background-color: #D4A574" class="rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">outbox</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">Carlos Ruiz <span class="font-normal text-on-surface-variant">retiró</span> 'Ficciones'</p>
+<p class="text-[10px] font-bold text-outline uppercase tracking-[0.1em]">Hace 2 horas • Sala B</p>
+</div>
+</div>
+<span class="px-3 py-1" style="background-color: #D4A574; color: #6B5640" class="text-[10px] font-bold rounded-full uppercase tracking-tighter">En Curso</span>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg transition-all cursor-default border" style="background-color: #EFEAE0; border-color: transparent">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full flex items-center justify-center" style="background-color: #B8756B">
+<span class="material-symbols-outlined text-red-700 text-xl">warning</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">Sistema <span class="font-normal text-on-surface-variant">notificó retraso en</span> 'Pedro Páramo'</p>
+<p class="text-[10px] font-bold text-outline uppercase tracking-[0.1em]">Hace 3 horas • Automatización</p>
+</div>
+</div>
+<span class="px-3 py-1" style="background-color: #B8756B; color: #FFF8E7" class="text-[10px] font-bold rounded-full uppercase tracking-tighter">Atrasado</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Footer -->
+<footer class="p-10 text-center opacity-30">
+<div class="flex justify-center gap-12 mb-4">
+<div class="h-[1px] w-24 bg-amber-200/60"></div>
+<span class="material-symbols-outlined text-primary -mt-3">menu_book</span>
+<div class="h-[1px] w-24 bg-amber-200/60"></div>
+</div>
+<p class="serif-title italic text-sm">"I have always imagined that Paradise will be a kind of library." — Jorge Luis Borges</p>
+</footer>
+</main>
+
+<script>
+    function toggleAllActivity() {
+        const activityContainer = document.querySelector('.space-y-4.flex-1');
+        const button = event.target;
+        
+        if (activityContainer.classList.contains('max-h-96')) {
+            activityContainer.classList.remove('max-h-96');
+            activityContainer.classList.remove('overflow-hidden');
+            button.textContent = 'Ocultar historial';
+        } else {
+            activityContainer.classList.add('max-h-96');
+            activityContainer.classList.add('overflow-hidden');
+            button.textContent = 'Ver todo el historial';
+        }
+    }
+
+    // Agregar estilos dinámicos al contenedor de actividad
+    document.addEventListener('DOMContentLoaded', function() {
+        const activityContainer = document.querySelector('.space-y-4.flex-1');
+        if (activityContainer) {
+            activityContainer.classList.add('max-h-96');
+            activityContainer.classList.add('overflow-hidden');
+            activityContainer.style.transition = 'max-height 0.3s ease-in-out';
+        }
+    });
+</script>
+
+</body></html>

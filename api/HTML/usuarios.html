@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Biblioteca - Gestión de Préstamos</title>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#1976D2",
+                        "primary-dark": "#1565C0",
+                        "primary-light": "#42A5F5",
+                        "primary-container": "#E3F2FD",
+                        "on-primary-container": "#0D47A1",
+                        "secondary": "#388E3C",
+                        "secondary-dark": "#2E7D32",
+                        "secondary-light": "#4CAF50",
+                        "secondary-container": "#E8F5E8",
+                        "on-secondary-container": "#1B5E20",
+                        "accent": "#FF9800",
+                        "background": "#F5F5F5",
+                        "surface": "#FFFFFF",
+                        "surface-variant": "#E8F5E8",
+                        "surface-container": "#F5F5F5",
+                        "surface-container-high": "#E8F5E8",
+                        "surface-container-lowest": "#FFFFFF",
+                        "on-primary": "#FFFFFF",
+                        "on-secondary": "#FFFFFF",
+                        "on-background": "#212121",
+                        "on-surface": "#212121",
+                        "on-surface-variant": "#757575",
+                        "error": "#D32F2F",
+                        "error-container": "#FFEBEE",
+                        "on-error": "#FFFFFF",
+                        "on-error-container": "#B71C1C",
+                        "success": "#4CAF50",
+                        "warning": "#FF9800",
+                        "info": "#2196F3",
+                        "tertiary": "#7B1FA2",
+                        "tertiary-container": "#F3E5F5",
+                        "on-tertiary": "#FFFFFF",
+                        "on-tertiary-container": "#4A148C",
+                        "outline": "#BDBDBD",
+                        "outline-variant": "#E0E0E0",
+                        "card-bg": "rgba(255, 255, 255, 0.9)",
+                        "sidebar-bg": "rgba(255, 255, 255, 0.25)",
+                        "header-bg": "rgba(255, 255, 255, 0.95)"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: "Manrope", sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 50%, #E8F5E8 100%);
+            background-attachment: fixed;
+        }
+        .serif-title {
+            font-family: "Newsreader", serif;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; opacity: 0.02;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC1dWA-hrcMxk-4DJCHh9lr3t7Zw7cJ4RppchKfZaUDFUqEqIgNUtQ9d8O-v5Dtta_UmTO8t2YNBy_d85-WH3EK4BNZD_Ms09YP1Al3x2YjJl7Ku362sM416MeXRSNrzNpTRG9nYSQ-yxSsH18vZgLLkpFzFHmDeGzuwgsgmarojH6CvqOY_fju3r3-GXDQShNGLDHJaPfh7gAtZuCGK2b2N5sVUEPK9tAhTzRpSmToY0P_c8ibf9rbt09d4iKwY-T--Pv6_PkwnuE);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="text-on-surface antialiased overflow-x-hidden">
+    <div class="grain-overlay"></div>
+    
+       <!-- SideNavBar -->
+    <aside class="fixed left-0 top-0 h-full w-64 flex flex-col p-6 space-y-2 font-serif" style="background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-right: 1px solid rgba(76, 95, 213, 0.1);">
+        <div class="mb-6">
+            <h1 class="text-xl font-bold font-serif" style="color: #4C5FD5;">Archivo Editorial</h1>
+            <p class="text-xs uppercase tracking-widest mt-1" style="color: #4C5FD5;">Sistema de Gestión</p>
+        </div>
+        <nav class="flex-1 space-y-2">
+            <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg" style="color: #42484E;" href="Panel.html" onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span>Panel Control</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg" style="color: #42484E;" href="usuario.html" onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                <span class="material-symbols-outlined">group</span>
+                <span>Usuarios</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 transition-transform duration-200 ease-in-out scale-95 active:scale-90 rounded-lg" style="background-color: #4C5FD5;color: #FFFFFF;" href="prestamos.html" >
+                <span class="material-symbols-outlined">book</span>
+                <span>Préstamos</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-transform duration-200 ease-in-out scale-95" style="color: #42484E;" href="libros.html" onmouseover="this.style.backgroundColor='rgba(76, 95, 213, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                <span class="material-symbols-outlined">library_books</span>
+                <span>Libros</span>
+            </a>
+        </nav>
+        <div class="pt-6" style="border-top: 1px solid rgba(76, 95, 213, 0.1);">
+        </div>
+    </aside>
+
+    <!-- Main Content Canvas -->
+    <main class="ml-64 min-h-screen">
+        <!-- TopNavBar -->
+        <header class="w-full top-0 sticky z-40 shadow-sm flex justify-between items-center px-8 py-4" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+            <div class="flex items-center gap-4">
+                <span class="text-2xl font-bold font-serif text-primary">Gestión de Préstamos</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <button class="text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </button>
+                    <div class="flex items-center gap-3 pl-4 border-l border-primary/20">
+                        <span class="text-sm font-medium text-on-surface">Bibliotecario Real</span>
+                        <img alt="Administrator profile portrait" class="w-8 h-8 rounded-full border border-orange-900/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5i0-VRW-dQ80GZ2JgOP0f0nJxQDLbMcs_9Wr2f9F4MFvrusFkOr4tLpdTiMtx4GrDelShptRZLPTSKxdM1XlcoLtc8kwsLdsDb9KyZVbbV38aUwX76tyOOtobDHHbG50SYPQZane9gFzjg6nkpkXTjLya5iZlPzOpLnIG7BobwWRUQAXRi5rhp6qX0qfNldYuyoeHiRHbE92l2ombO2SqszNgRMF7GE6QNViIdOB4CbfTcKMEIA87kEd6bGA6GLsPuMwaS3Ccup0"/>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 space-y-8">
+        <!-- Título y Botón Nuevo Préstamo -->
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold serif-title text-on-background">Préstamos Activos</h2>
+            <button onclick="openAddLoanModal()" class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-primary-container transition">
+                <span class="material-symbols-outlined">add</span>
+                Nuevo Préstamo
+            </button>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-surface-container-high rounded-xl p-6 shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm font-bold">Préstamos Activos</p>
+                        <p class="text-3xl font-bold text-primary mt-2">12</p>
+                    </div>
+                    <span class="material-symbols-outlined text-5xl text-primary-container">library_books</span>
+                </div>
+            </div>
+            <div class="bg-surface-container-high rounded-xl p-6 shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm font-bold">Vencidos</p>
+                        <p class="text-3xl font-bold text-error mt-2">2</p>
+                    </div>
+                    <span class="material-symbols-outlined text-5xl text-error-container">schedule</span>
+                </div>
+            </div>
+            <div class="bg-surface-container-high rounded-xl p-6 shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm font-bold">Por Vencer</p>
+                        <p class="text-3xl font-bold text-tertiary mt-2">5</p>
+                    </div>
+                    <span class="material-symbols-outlined text-5xl text-tertiary-container">pending_actions</span>
+                </div>
+            </div>
+            <div class="bg-surface-container-high rounded-xl p-6 shadow-md">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-on-surface-variant text-sm font-bold">Devueltos</p>
+                        <p class="text-3xl font-bold text-secondary mt-2">48</p>
+                    </div>
+                    <span class="material-symbols-outlined text-5xl text-secondary-container">check_circle</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Búsqueda y Filtros -->
+        <div class="mb-6 flex gap-4 flex-wrap">
+            <div class="flex-1 min-w-[200px]">
+                <input type="text" id="searchInput" placeholder="Buscar por usuario o libro..." 
+                    class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+            </div>
+            <select id="filterEstado" class="px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                <option value="">Filtrar por estado</option>
+                <option value="Activo">Activo</option>
+                <option value="Vencido">Vencido</option>
+                <option value="Devuelto">Devuelto</option>
+                <option value="Por Vencer">Por Vencer</option>
+            </select>
+        </div>
+
+        <!-- Tabla de Préstamos -->
+        <div class="overflow-x-auto rounded-xl shadow-md">
+            <table class="w-full bg-surface-container-lowest">
+                <thead class="bg-primary-container text-on-primary-container">
+                    <tr>
+                        <th class="px-6 py-4 text-left font-bold">Usuario</th>
+                        <th class="px-6 py-4 text-left font-bold">Libro</th>
+                        <th class="px-6 py-4 text-left font-bold">Fecha Préstamo</th>
+                        <th class="px-6 py-4 text-left font-bold">Fecha Devolución</th>
+                        <th class="px-6 py-4 text-left font-bold">Estado</th>
+                        <th class="px-6 py-4 text-center font-bold">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="prestamosTableBody">
+                    <!-- Los préstamos se cargarán aquí mediante JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Modal Agregar/Editar Préstamo -->
+        <div id="loanModal" class="modal">
+        <div class="bg-surface rounded-2xl shadow-2xl max-w-md w-full mx-4">
+            <div class="bg-primary-container text-on-primary-container p-6 rounded-t-2xl">
+                <h2 class="text-2xl font-bold serif-title">Nuevo Préstamo</h2>
+            </div>
+            <form id="loanForm" class="p-6 space-y-4 max-h-96 overflow-y-auto">
+                <div>
+                    <label class="block text-on-surface font-bold mb-2">ID Préstamo</label>
+                    <input type="text" id="prestamoId" placeholder="Auto-generado" readonly class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant bg-surface-container outline-none cursor-not-allowed text-on-surface-variant">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-on-surface font-bold mb-2">ID Usuario</label>
+                        <input type="text" id="usuarioId" placeholder="ID usuario" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-on-surface font-bold mb-2">ID Libro</label>
+                        <input type="text" id="libroId" placeholder="ID libro" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-on-surface font-bold mb-2">Usuario</label>
+                    <select id="usuarioSelect" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                        <option value="">Seleccione usuario</option>
+                        <option value="1" data-user-id="U001">Juan Pérez</option>
+                        <option value="2" data-user-id="U002">María García</option>
+                        <option value="3" data-user-id="U003">Carlos López</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-on-surface font-bold mb-2">Libro</label>
+                    <select id="libroSelect" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                        <option value="">Seleccione libro</option>
+                        <option value="1" data-book-id="L001">Don Quijote de la Mancha</option>
+                        <option value="2" data-book-id="L002">Cien años de soledad</option>
+                        <option value="3" data-book-id="L003">El Principito</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-on-surface font-bold mb-2">Fecha Préstamo</label>
+                        <input type="date" id="fechaPrestamo" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-on-surface font-bold mb-2">Fecha Devolución</label>
+                        <input type="date" id="fechaDevolucion" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-on-surface font-bold mb-2">Estado</label>
+                    <select id="estado" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none">
+                        <option value="">Seleccione estado</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Devuelto">Devuelto</option>
+                        <option value="Vencido">Vencido</option>
+                        <option value="Por Vencer">Por Vencer</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-on-surface font-bold mb-2">Observaciones</label>
+                    <textarea id="observaciones" placeholder="Ingrese observaciones..." rows="2" class="w-full px-4 py-2 rounded-xl border-2 border-outline-variant focus:border-primary outline-none"></textarea>
+                </div>
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeLoanModal()" class="flex-1 px-6 py-2 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary-fixed-dim transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-6 py-2 rounded-xl bg-primary text-on-primary font-bold hover:bg-primary-container transition">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let prestamosData = [];
+        let usuariosData = [];
+        let librosData = [];
+        let prestamoEditando = null;
+
+        // Cargar datos al cargar la página
+        window.addEventListener('load', async () => {
+            await cargarPrestamos();
+            await cargarUsuarios();
+            await cargarLibros();
+        });
+
+        // Cargar préstamos desde PHP
+        async function cargarPrestamos() {
+            try {
+                const response = await fetch('../prestamos.php?accion=listar');
+                const resultado = await response.json();
+                
+                if (resultado.exito) {
+                    prestamosData = resultado.datos;
+                    mostrarPrestamos(prestamosData);
+                }
+            } catch (error) {
+                console.error('Error al cargar préstamos:', error);
+            }
+        }
+
+        // Cargar usuarios
+        async function cargarUsuarios() {
+            try {
+                const response = await fetch('../usuarios.php?accion=listar');
+                const resultado = await response.json();
+                
+                if (resultado.exito) {
+                    usuariosData = resultado.datos;
+                    const select = document.getElementById('usuarioSelect');
+                    select.innerHTML = '<option value="">Seleccione usuario</option>';
+                    usuariosData.forEach(u => {
+                        select.innerHTML += `
+                            <option value="${u.ID}">
+                                ${u.Nombre}
+                            </option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error);
+            }
+        }
+
+        // Cargar libros
+        async function cargarLibros() {
+            try {
+                const response = await fetch('../libros.php?accion=listar');
+                const resultado = await response.json();
+                
+                console.log("LIBROS:", resultado); // 👈 AGREGA ESTO
+
+
+                if (resultado.exito) {
+                    librosData = resultado.datos;
+                    const select = document.getElementById('libroSelect');
+                    select.innerHTML = '<option value="">Seleccione libro</option>';
+                    librosData.forEach(l => {
+                        select.innerHTML += `
+                            <option value="${l.ID}">
+                                ${l.Titulo}
+                            </option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error al cargar libros:', error);
+            }
+        }
+
+        // Mostrar préstamos en la tabla
+        function mostrarPrestamos(prestamos) {
+            const tbody = document.getElementById('prestamosTableBody');
+            tbody.innerHTML = '';
+
+            prestamos.forEach(prestamo => {
+                const estadoColor = getEstadoColor(prestamo.estado);
+                const fila = document.createElement('tr');
+                fila.classList.add('border-t', 'border-outline-variant', 'hover:bg-surface-container-high', 'transition');
+                fila.innerHTML = `
+                    <td class="px-6 py-4">${prestamo.usuario}</td>
+                    <td class="px-6 py-4">${prestamo.libro}</td>
+                    <td class="px-6 py-4">${new Date(prestamo['Fecha de préstamo']).toLocaleDateString('es-ES')}</td>
+                    <td class="px-6 py-4">${prestamo['Fecha de devolución'] ? new Date(prestamo['Fecha de devolución']).toLocaleDateString('es-ES') : '-'}</td>
+                    <td class="px-6 py-4"><span style="background-color: ${estadoColor.bg}; color: ${estadoColor.text}" class="px-3 py-1 rounded-full text-sm">${prestamo.Estado}</span></td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="editLoan(${prestamo.ID})" class="text-primary hover:text-primary-container transition mr-3" title="Editar">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button onclick="returnLoan(${prestamo.ID})" class="text-secondary hover:text-on-secondary transition mr-3" title="Registrar Devolución">
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </button>
+                        <button onclick="deleteLoan(${prestamo.ID})" class="text-error hover:text-on-error transition" title="Eliminar">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        }
+
+        function getEstadoColor(estado) {
+            const colores = {
+                'Activo': { bg: '#A8B8A0', text: '#3E4C38' },
+                'Vencido': { bg: '#B8756B', text: '#FFF8E7' },
+                'Por Vencer': { bg: '#D4A574', text: '#6B5640' },
+                'Devuelto': { bg: '#A8C8B8', text: '#3E4C38' }
+            };
+            return colores[estado] || { bg: '#D8D0C0', text: '#3E3E38' };
+        }
+
+        function openAddLoanModal() {
+            prestamoEditando = null;
+            document.getElementById('loanModal').classList.add('show');
+            document.getElementById('loanForm').reset();
+            document.getElementById('prestamoId').value = 'Auto-generado';
+        }
+
+        function closeLoanModal() {
+            document.getElementById('loanModal').classList.remove('show');
+            document.getElementById('loanForm').reset();
+            prestamoEditando = null;
+        }
+
+        async function editLoan(id) {
+            const prestamo = prestamosData.find(p => p.ID == id);
+            if (prestamo) {
+                prestamoEditando = prestamo;
+                document.getElementById('loanModal').classList.add('show');
+                document.getElementById('prestamoId').value = prestamo.ID;
+                document.getElementById('usuarioId').value = prestamo['ID usuario'];
+                document.getElementById('usuarioSelect').value = prestamo['ID usuario'];
+                document.getElementById('libroId').value = prestamo['ID libro'];
+                document.getElementById('libroSelect').value = prestamo['ID libro'];
+                document.getElementById('fechaPrestamo').value = prestamo['Fecha de préstamo'];
+                document.getElementById('fechaDevolucion').value = prestamo['Fecha de devolución'] || '';
+                document.getElementById('estado').value = prestamo.Estado;
+            }
+        }
+
+        async function returnLoan(id) {
+            const hoy = new Date().toISOString().split('T')[0];
+            if (confirm('¿Registrar devolución como completada?')) {
+                try {
+                    const response = await fetch('../prestamos.php?accion=actualizar', {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            id: id,
+                            estado: 'Devuelto',
+                            fecha_devolucion: hoy
+                        })
+                    });
+                    const resultado = await response.json();
+                    
+                    if (resultado.exito) {
+                        alert(resultado.mensaje);
+                        cargarPrestamos();
+                    } else {
+                        alert(resultado.mensaje);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al actualizar préstamo');
+                }
+            }
+        }
+
+        async function deleteLoan(id) {
+            if (confirm('¿Desea eliminar este préstamo?')) {
+                try {
+                    const response = await fetch(`../prestamos.php?accion=eliminar&id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    const resultado = await response.json();
+                    
+                    if (resultado.exito) {
+                        alert(resultado.mensaje);
+                        cargarPrestamos();
+                    } else {
+                        alert(resultado.mensaje);
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar:', error);
+                    alert('Error al eliminar préstamo');
+                }
+            }
+        }
+
+        // Actualizar ID usuario cuando se selecciona
+        document.getElementById('usuarioSelect').addEventListener('change', function() {
+            document.getElementById('usuarioId').value = this.value;
+        });
+
+        // Actualizar ID libro cuando se selecciona
+        document.getElementById('libroSelect').addEventListener('change', function() {
+            document.getElementById('libroId').value = this.value;
+        });
+
+        // Enviar formulario
+        document.getElementById('loanForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const datos = {
+                usuario_id: document.getElementById('usuarioSelect').value,
+                libro_id: document.getElementById('libroSelect').value,
+                fecha_prestamo: document.getElementById('fechaPrestamo').value,
+                fecha_devolucion: document.getElementById('fechaDevolucion').value,
+                estado: document.getElementById('estado').value
+            };
+
+            if (!datos.usuario_id || !datos.libro_id) {
+                alert('Seleccione usuario y libro');
+                return;
+            }
+
+            try {
+                let response;
+                if (prestamoEditando) {
+                    datos.ID = prestamoEditando.ID;
+                    response = await fetch('../prestamos.php?accion=actualizar', {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(datos)
+                    });
+                } else {
+                    response = await fetch('../prestamos.php?accion=crear', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(datos)
+                    });
+                }
+
+                const resultado = await response.json();
+                
+                if (resultado.exito) {
+                    alert(resultado.mensaje);
+                    closeLoanModal();
+                    cargarPrestamos();
+                } else {
+                    alert(resultado.mensaje);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar préstamo');
+            }
+        });
+
+        // Función para filtrar y buscar préstamos
+        function filtrarPrestamos() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filterEstado = document.getElementById('filterEstado').value;
+            
+            const filtrados = prestamosData.filter(prestamo => {
+                const usuario = (prestamo.usuario || '').toLowerCase();
+                const libro = (prestamo.libro || '').toLowerCase();
+                
+                const coincideTexto = usuario.includes(searchInput) || libro.includes(searchInput);
+                const coincideEstado = filterEstado === '' || prestamo.Estado === filterEstado;
+                
+                return coincideTexto && coincideEstado;
+            });
+
+            mostrarPrestamos(filtrados);
+        }
+
+        // Event listeners para búsqueda y filtro
+        document.getElementById('searchInput').addEventListener('keyup', filtrarPrestamos);
+        document.getElementById('filterEstado').addEventListener('change', filtrarPrestamos);
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            var modal = document.getElementById('loanModal');
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        }
+    </script>
+    </main>
+</body>
+</html>
